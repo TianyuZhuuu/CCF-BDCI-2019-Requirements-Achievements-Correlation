@@ -43,15 +43,15 @@ Requirement和Achievement均以`(id, title, text)`三元组形式给出，任务
 ## 4.模型
 预训练的模型已经霸榜了，所以没有尝试传统的DL模型。本任务是Ordinal Regression问题(实际上是分类问题，但标签间存在大小顺序)，模型基本确定使用BERT/XLNET/RoBERTa，我的着眼点在于怎么利用好标签的顺序关系。一共使用了三种方法:
 
-### 1.Regression + Threshold Optimization
+#### 1.Regression + Threshold Optimization
 用BERT做regression得到relevence的值(小数)，利用阈值把relevence转化成整数标签。最简单的方法是直接使用`np.around`四舍五入，但x.5不保证是最优阈值，实验中使用了Kaggle PetFinder.my Adoption Prediction讨论区的<a href="https://www.kaggle.com/c/petfinder-adoption-prediction/discussion/76107#latest-502207">算法</a>来优化阈值。
 
-### 2.Classification + <a href="https://arxiv.org/pdf/1703.10593.pdf">Soft Label</a>
+#### 2.Classification + <a href="https://arxiv.org/pdf/1703.10593.pdf">Soft Label</a>
 将度量标准的惩罚无缝地结合到真实标签表示中来约束类别之间的关系。将数据标签转换为soft label，该分布与常见的分类损失函数（例如交叉熵）很好地配对。这里使用BERT去拟合生成的soft label。
 <p align="center"><img src="imgs/soft_label.jpg" width="342"></p>
 <span><img src="http://www.sciweavers.org/tex2img.php?eq=%5Cphi%28r_t%2C%20r_i%29&bc=White&fc=Black&im=jpg&fs=12&ff=arev&edit=0" align="center" border="0" alt="\phi(r_t, r_i)" width="64" height="19" /></span><text>衡量真实标签t与标签i的距离，实验中使用</text><span><img src="http://www.sciweavers.org/tex2img.php?eq=%5Cphi%20%3D%202%7Cr_i-r_t%7C&bc=White&fc=Black&im=jpg&fs=12&ff=arev&edit=0" align="center" border="0" alt="\phi = 2|r_i-r_t|" width="103" height="19" /></span>.
 
-### 3.<a href="https://arxiv.org/pdf/1901.07884.pdf">CORAL</a>
+#### 3.<a href="https://arxiv.org/pdf/1901.07884.pdf">CORAL</a>
 <p align="center"><img src="imgs/coral.jpg"></p>
 
 对于`K`个类别的ordinal regression任务，CORAL做`K-1`个二分类判断是否`y>r_1, y>r_2, ..., y>r_{K-1}`
@@ -61,10 +61,10 @@ Requirement和Achievement均以`(id, title, text)`三元组形式给出，任务
 测试时样本的标签为`1+\sum_i{1(P(y>r_i)>0.5)}`
 
 ## 4.Tricks
-### 数据增广
+#### 数据增广
 requirement和achievement的内容差别大，看做是不同的domain，交换它们在输入的次序起到数据增广的作用。对每个超参数设定，我都训练了两个模型，它们的输入为`(requirement, achievement)`和`(achievement, requirement)`。提交发现在初赛A榜还是比较有效的，因此就一直沿用这种设定了。
 
-### <a href="https://arxiv.org/abs/1905.09788">Multi Sample Dropout</a>
+#### <a href="https://arxiv.org/abs/1905.09788">Multi Sample Dropout</a>
 <p align="center"><img src="imgs/multisampledropout.jpg" width="342"></p>
 
 使用Dropout的训练过程是:BERT得到sentence pair的表示，使用Dropout后在输出层进行分类，计算loss更新参数。
