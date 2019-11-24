@@ -49,7 +49,7 @@ Requirement和Achievement均以`(id, title, text)`三元组形式给出，任务
 #### 2.Classification + <a href="https://arxiv.org/pdf/1703.10593.pdf">Soft Label</a>
 将度量标准的惩罚无缝地结合到真实标签表示中来约束类别之间的关系。将数据标签转换为soft label，该分布与常见的分类损失函数（例如交叉熵）很好地配对。这里使用BERT去拟合生成的soft label。
 <p align="center"><img src="imgs/soft_label.jpg" width="342"></p>
-<span><img src="http://www.sciweavers.org/tex2img.php?eq=%5Cphi%28r_t%2C%20r_i%29&bc=White&fc=Black&im=jpg&fs=12&ff=arev&edit=0" align="center" border="0" alt="\phi(r_t, r_i)" width="64" height="19" /></span><text>衡量真实标签t与标签i的距离，实验中使用</text><span><img src="http://www.sciweavers.org/tex2img.php?eq=%5Cphi%20%3D%202%7Cr_i-r_t%7C&bc=White&fc=Black&im=jpg&fs=12&ff=arev&edit=0" align="center" border="0" alt="\phi = 2|r_i-r_t|" width="103" height="19" /></span>.
+`\phi`衡量真实标签t与标签i的距离，实验中使用`\phi = 2|r_i-r_t|`.
 
 #### 3.<a href="https://arxiv.org/pdf/1901.07884.pdf">CORAL</a>
 <p align="center"><img src="imgs/coral.jpg"></p>
