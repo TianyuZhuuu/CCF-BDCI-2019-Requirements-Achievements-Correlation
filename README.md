@@ -81,3 +81,5 @@ requirement和achievement的内容差别大，看做是不同的domain，交换�
 2.RAdam本地CV有一点提升，线上下降了一点。
 
 3.Pseudo Label初赛A榜上是能稳定提分的，大概做法就是训好模型在测试集上预测得到pseudo label，再把带pseudo label的测试集加到训练集里训练新模型，可以选择hard/soft(hard使用预测的**class**做pseudo label，soft使用预测出的**logits**做pseudo label)。初赛A榜用soft pseudo labl三个模型都有提高，到了B榜不稳定所以就弃用了。
+
+4.集成学习。虽然尝试了三种不同的模型，但初赛复赛AB榜最好成绩都是单模型取得的，初赛最好成绩是两个CORAL取平均得到的，复赛最好成绩是5个Soft Label BERT取平均得到的。在复赛尝试了三种模型进行投票集成，但是由于三种模型的成绩差距较大，集成后的结果反而比最优单模型下降了。
