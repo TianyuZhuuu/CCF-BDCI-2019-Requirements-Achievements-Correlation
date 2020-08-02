@@ -46,7 +46,7 @@ Requirement和Achievement均以`(id, title, text)`三元组形式给出，任务
 #### 1.Regression + Threshold Optimization
 用BERT做regression得到relevence的值(小数)，利用阈值把relevence转化成整数标签。最简单的方法是直接使用`np.around`四舍五入，但x.5不保证是最优阈值，实验中使用了Kaggle PetFinder.my Adoption Prediction讨论区的<a href="https://www.kaggle.com/c/petfinder-adoption-prediction/discussion/76107#latest-502207">算法</a>来优化阈值。
 
-#### 2.Classification + <a href="https://arxiv.org/pdf/1703.10593.pdf">Soft Label</a>
+#### 2.Classification + <a href="https://openaccess.thecvf.com/content_CVPR_2019/papers/Diaz_Soft_Labels_for_Ordinal_Regression_CVPR_2019_paper.pdf">Soft Label</a>
 将度量标准的惩罚无缝地结合到真实标签表示中来约束类别之间的关系。将数据标签转换为soft label，该分布与常见的分类损失函数（例如交叉熵）很好地配对。这里使用BERT去拟合生成的soft label。
 <p align="center"><img src="imgs/soft_label.jpg" width="342"></p>
 `\phi`衡量真实标签t与标签i的距离，实验中使用`\phi = 2|r_i-r_t|`.
